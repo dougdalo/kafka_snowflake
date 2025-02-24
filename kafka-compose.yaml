@@ -102,6 +102,24 @@ services:
       - kafka
       - kafka-connect
 
+  ftp:
+    image: fauria/vsftpd
+    container_name: ftp_server
+    restart: always
+    ports:
+      - "21:21"
+      - "21000-21010:21000-21010"
+    environment:
+      - FTP_USER=testuser
+      - FTP_PASS=testpass
+      - PASV_ADDRESS=127.0.0.1
+      - PASV_MIN_PORT=21000
+      - PASV_MAX_PORT=21010
+    volumes:
+      - ./ftp_data:/home/vsftpd
+    networks:
+      - kafka_network
+
 networks:
   kafka_network:
     driver: bridge
